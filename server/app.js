@@ -11,7 +11,12 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: "https://ai-analyzer-calv.vercel.app", // Allow only your frontend
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true // Allow cookies if needed
+}));
+
 
 
 const SECRET_KEY = process.env.JWT_SECRET || "your_secret_key";
