@@ -90,21 +90,21 @@ const Signup = () => {
             data.append("profession", formData.profession)
             data.append("password", formData.password)
 
-          
+
             const pushedData = {
                 name: formData.name,
                 profession: formData.profession,
-                password: formData.password, 
-              
+                password: formData.password,
+
             }
 
             // Send the request to the backend
-            const response = await axios.post(`${import.meta.env.REACT_BASE_BACKEND_URL}/signup`, pushedData, {
+            const response = await axios.post(`${import.meta.env.VITE_BASE_BACKEND_URL}/signup`, pushedData, {
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
-            
+
 
             setSuccess(response.data.message || "Account created successfully!")
 
@@ -180,7 +180,7 @@ const Signup = () => {
                         {fieldErrors.profession && <ValidationError>{fieldErrors.profession}</ValidationError>}
                     </FormGroup>
 
-    
+
                     <FormGroup>
                         <Label htmlFor="password">Password</Label>
                         <Input
