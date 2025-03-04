@@ -4,9 +4,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import bcrypt from "bcrypt";
-import multer from "multer";
 import jwt from "jsonwebtoken";
-import path from "path";
 import { authModel } from "./authModel.js";
 
 dotenv.config();
@@ -15,23 +13,14 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+
 const SECRET_KEY = process.env.JWT_SECRET || "your_secret_key";
 
 // GeminiAI
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-// Multer
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/'); // Ensure this folder exists
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname));
-    }
-});
 
-const upload = multer({ storage: storage });
 
 // MongoDB Connection
 mongoose
@@ -55,10 +44,10 @@ const verifyToken = (req, res, next) => {
 };
 
 // Signup Route
-app.post("/signup", upload.single("image"), async (req, res) => {
+app.post("/signup", async (req, res) => {
     try {
-        const { name, profession, password, imageFile } = req.body;
-        const imageUrl = imageFile ? `/uploads/${imageFile}` : "";
+        const { name, profession, password } = req.body;
+
 
         if (!password) {
             return res.status(400).json({ message: "Password is required" });
@@ -74,7 +63,7 @@ app.post("/signup", upload.single("image"), async (req, res) => {
             name,
             profession,
             password: hashedPassword,
-            image: imageUrl,
+
         });
 
         await newUser.save();

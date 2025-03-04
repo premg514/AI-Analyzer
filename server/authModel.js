@@ -18,10 +18,7 @@ const authSchema = new mongoose.Schema(
             type: String,
             required: [true, "Password is required"],
         },
-        image: {
-            type: String,
-            required: [true, "Profile image is required"]
-        }
+      
     },
     { timestamps: true },
 )
