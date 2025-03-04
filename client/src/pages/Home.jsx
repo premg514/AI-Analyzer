@@ -37,7 +37,6 @@ import {
 } from "./homeStyles";
 
 const Home = () => {
-
   const usergetting = localStorage.getItem('userDetails')
   let user = {
     name: "user"

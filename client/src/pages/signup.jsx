@@ -97,6 +97,7 @@ const Signup = () => {
                 password: formData.password,
 
             }
+            const BASE_URL =  import.meta.env.VITE_BASE_BACKEND_URL
 
             // Send the request to the backend
             const response = await axios.post(`${import.meta.env.VITE_BASE_BACKEND_URL}/signup`, pushedData, {
@@ -105,7 +106,7 @@ const Signup = () => {
                 },
             });
 
-
+            console.log(BASE_URL)
             setSuccess(response.data.message || "Account created successfully!")
 
             // Navigate to login page after successful signup
