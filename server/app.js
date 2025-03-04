@@ -57,8 +57,8 @@ const verifyToken = (req, res, next) => {
 // Signup Route
 app.post("/signup", upload.single("image"), async (req, res) => {
     try {
-        const { name, profession, password } = req.body;
-        const imageUrl = req.file ? `/uploads/${req.file.filename}` : "";
+        const { name, profession, password, imageFile } = req.body;
+        const imageUrl = imageFile ? `/uploads/${imageFile}` : "";
 
         if (!password) {
             return res.status(400).json({ message: "Password is required" });
