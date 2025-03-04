@@ -37,7 +37,7 @@ import {
 } from "./homeStyles";
 
 const Home = () => {
-  
+
   const usergetting = localStorage.getItem('userDetails')
   let user = {
     name: "user"
@@ -89,19 +89,19 @@ const Home = () => {
 
     try {
       if (token) {
-        const response = await fetch("http://localhost:5001/generate", options);
+        const response = await fetch(`${import.meta.env.REACT_BASE_BACKEND_URL}/generate`, options);
         const data = await response.json();
 
         if (data) {
           setResultData(data.data);
-          
+
           // Add timestamp to history item
           const newHistoryItem = {
             query: inputValue,
             timestamp: new Date().toISOString(),
             id: Date.now().toString() // Unique ID for each history item
           };
-          
+
           setRecentData(prevData => [newHistoryItem, ...(prevData || []).slice(0, 9)]); // Keep last 10 items
           setInputValue(""); // Clear input field
 
@@ -131,9 +131,9 @@ const Home = () => {
   const handleLogout = () => {
     Cookies.remove("token");
     localStorage.removeItem('userDetails')
-    if(token){
+    if (token) {
       alert("Logout Successful!")
-    }else{
+    } else {
       alert("You need to login :)")
     }
   };
@@ -174,7 +174,7 @@ const Home = () => {
           <h3>Recent Queries</h3>
           <div style={{ display: 'flex', gap: '10px' }}>
             {recentData.length > 0 && (
-              <button 
+              <button
                 onClick={clearAllHistory}
                 style={{
                   background: 'none',
@@ -200,7 +200,7 @@ const Home = () => {
             <FiClock /> History
           </MenuTab>
           <MenuTab>
-            <HiOutlineLogin/><LogoutButton onClick={handleLogout} >  Logout</LogoutButton>
+            <HiOutlineLogin /><LogoutButton onClick={handleLogout} >  Logout</LogoutButton>
           </MenuTab>
         </MenuTabs>
 
@@ -243,10 +243,10 @@ const Home = () => {
         </ListContainer>
         <MenuTabs1>
           <MenuTab >
-          <SiGnuprivacyguard/> <LogoutButton onClick={()=> navigate('/signup') } >Signup </LogoutButton> 
+            <SiGnuprivacyguard /> <LogoutButton onClick={() => navigate('/signup')} >Signup </LogoutButton>
           </MenuTab>
           <MenuTab>
-          <IoExitOutline />  <LogoutButton onClick={()=>navigate('/login')} >  Login</LogoutButton>
+            <IoExitOutline />  <LogoutButton onClick={() => navigate('/login')} >  Login</LogoutButton>
           </MenuTab>
         </MenuTabs1>
       </Sidebar>

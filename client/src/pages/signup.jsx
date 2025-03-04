@@ -99,7 +99,7 @@ const Signup = () => {
             }
 
             // Send the request to the backend
-            const response = await axios.post("http://localhost:5001/signup", pushedData, {
+            const response = await axios.post(`${import.meta.env.REACT_BASE_BACKEND_URL}/signup`, pushedData, {
                 headers: {
                     "Content-Type": "application/json",
                 },
