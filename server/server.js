@@ -120,9 +120,8 @@ app.post("/generate", verifyToken, async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT;
-if (!PORT) {
-    throw new Error("PORT is not defined in environment variables.");
-}
+const PORT = process.env.PORT || 5001;
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
