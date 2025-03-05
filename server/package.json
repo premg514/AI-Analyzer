@@ -1,10 +1,10 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
-    "build": "node app.js",
+    "build": "node server.js",
     "vercel-build": "npm run build"
   },
   "keywords": [],
@@ -13,7 +13,6 @@
   "description": "",
   "dependencies": {
     "@google/generative-ai": "^0.22.0",
-    "bcrypt": "^5.1.1",
     "bcryptjs": "^3.0.2",
     "cloudinary": "^2.5.1",
     "cors": "^2.8.5",
