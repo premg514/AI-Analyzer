@@ -9,6 +9,7 @@ import { FiUser, FiSend, FiClock, FiTrash2 } from "react-icons/fi";
 import { SiGnuprivacyguard } from "react-icons/si";
 import { IoExitOutline } from "react-icons/io5";
 import { HiOutlineLogin } from "react-icons/hi";
+import { PiMagicWandFill } from "react-icons/pi";
 import Cookies from 'js-cookie'
 import { useNavigate } from "react-router-dom";
 import {
@@ -55,6 +56,7 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [recentData, setRecentData] = useState([]);
   const [showSuccessGlow, setShowSuccessGlow] = useState(false);
+  const [showSignup, setShowSignup] = useState(false);
   const sidebarRef = useRef(null);
 
   // Load history data from localStorage when component mounts
@@ -114,6 +116,7 @@ const Home = () => {
         }
       } else {
         alert("You don't have access, please login with your credentials.")
+        setShowSignup(true);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -134,6 +137,7 @@ const Home = () => {
     localStorage.removeItem('userDetails')
     if (token) {
       alert("Logout Successful!")
+      window.location.reload();
     } else {
       alert("You need to login :)")
     }
@@ -157,6 +161,20 @@ const Home = () => {
     setInputValue(query);
     setIsSidebarOpen(false); // Close sidebar after selecting
   };
+
+  //time greet
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) {
+      return "Good morning";
+    } else if (hour < 18) {
+      return "Good afternoon";
+    } else {
+      return "Good evening";
+    }
+  };
+
+
 
   return (
     <Container>
@@ -206,6 +224,12 @@ const Home = () => {
         </MenuTabs>
 
         <ListContainer>
+          <Button style={{ width: "100%", padding: "15px", display: "flex", justifyContent: "space-between", alignItems: "center" }}
+            onClick={() => window.location.reload()} >
+            <span>New Chat</span>
+            <PiMagicWandFill fontSize={20} color="#ffffff" />
+          </Button>
+
           {recentData.length > 0 ? (
             recentData.map((item) => (
               <RecentItem key={item.id}>
@@ -287,11 +311,28 @@ const Home = () => {
                 />
               </div>
             ) : (
-              <EmptyStateContainer>
-                <TbNoteOff size={48} />
-                <h3>No results yet</h3>
-                <p>Type a query and hit enter to get started</p>
+              <EmptyStateContainer isLogin={token ? true : false}>
+                <h3>
+                  {token && `${getGreeting()}, ${user.name.toUpperCase()}`}
+                </h3>
+                {showSignup ? (
+                  <>
+                    <MenuTabs1>
+                      <MenuTab active={true}>
+                        <SiGnuprivacyguard />{" "}
+                        <LogoutButton onClick={() => navigate("/signup")}>Signup</LogoutButton>
+                      </MenuTab>
+                      <MenuTab active={true}>
+                        <IoExitOutline />{" "}
+                        <LogoutButton onClick={() => navigate("/login")}>Login</LogoutButton>
+                      </MenuTab>
+                    </MenuTabs1>
+                    <p>User needs to login to go move forward.</p>
+                  </>
+                ) : <p>Type a query and hit enter to get started</p>}
+
               </EmptyStateContainer>
+
             )}
           </ResultsContainer>
         )}

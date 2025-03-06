@@ -1,5 +1,6 @@
 import styled, { keyframes, css } from "styled-components";
-
+import spidersleep from '../assets/spidersleep.jpg'
+import spider from '../assets/spider.jpg'
 const gradientAnimation = keyframes`
   0% {
     background-position: 0% 50%;
@@ -68,6 +69,7 @@ export const Sidebar = styled.div`
   padding: 20px;
   display: flex;
   flex-direction: column;
+  justify-content:space-around;
   gap: 20px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: ${({ isOpen }) => (isOpen ? "0 0 25px rgba(138, 43, 226, 0.2)" : "none")};
@@ -99,10 +101,11 @@ export const MenuTabs = styled.div`
 export const MenuTabs1 = styled.div`
   display: flex;
   gap: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 50px;
   display:fixed;
-  bottom:20px;
+  bottom:50px;
   margin-bottom:20px;
+ 
 `;
 
 
@@ -284,31 +287,40 @@ export const LoadingContainer = styled.div`
 `;
 
 export const EmptyStateContainer = styled.div`
+  background-image: url(${props => props.isLogin ? spider : spidersleep});
+  background-size: cover;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 50%;
+  height: 100%;
   text-align: center;
   padding: 20px;
   gap: 15px;
-  color: #a0a0a0;
+  color: #ffffff;
   
   h3 {
-    margin: 10px 0 0;
-    font-weight: 500;
-    font-size: 20px;
-    color: #d0d0d0;
+    font-size: 24px;
+    font-weight: 600;
+    color:#ffffff;
+    -webkit-background-clip: text;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5);
+    margin: 0;
   }
   
   p {
     margin: 0;
     font-size: 16px;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+    color:#ffffff;
+    font-weight:bold;
+    font-style:italic;
   }
   
   small {
     font-size: 14px;
     opacity: 0.7;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
   }
 `;
 
@@ -434,11 +446,11 @@ export const ProfileButton = styled.button`
 `;
 
 export const ListContainer = styled.div`
-height:50vh;
+  height:50vh;
   overflow-y: auto;
   flex: 1;
   padding-right: 5px;
-  
+  background:#000000;
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -492,4 +504,7 @@ export const Button = styled.button`
   width: 100%;
   text-align: left;
   padding: 0;
+   border-radius: 10px;
+  background: ${({ active }) => (active ? "linear-gradient(135deg, #4a00e0, #8e44ad)" : "#1a1a2e")};
+  transition: all 0.2s ease;
 `;
