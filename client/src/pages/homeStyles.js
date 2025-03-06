@@ -507,4 +507,5 @@ export const Button = styled.button`
    border-radius: 10px;
   background: ${({ active }) => (active ? "linear-gradient(135deg, #4a00e0, #8e44ad)" : "#1a1a2e")};
   transition: all 0.2s ease;
+  margin-bottom:10px;
 `;
