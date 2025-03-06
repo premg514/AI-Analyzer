@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState, useRef, useEffect } from "react";
 import { IoMenu, IoClose } from "react-icons/io5";
 import LoadingIcons from 'react-loading-icons';
@@ -88,7 +90,7 @@ const Home = () => {
 
     try {
       if (token) {
-        const response = await fetch(`${import.meta.env.REACT_BASE_BACKEND_URL}/generate`, options);
+        const response = await fetch(`${import.meta.env.VITE_BASE_BACKEND_URL}/generate`, options);
         const data = await response.json();
 
         if (data) {
