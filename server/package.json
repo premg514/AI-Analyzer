@@ -4,8 +4,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "build": "node server.js",
-    "vercel-build": "npm run build"
+    "start": "node server.js",
   },
   "keywords": [],
   "author": "",
