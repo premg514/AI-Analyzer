@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -168,99 +170,99 @@ const Spinner = styled.div`
 `;
 
 const Login = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        password: ''
+  const [formData, setFormData] = useState({
+    name: '',
+    password: ''
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
     });
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
-    const navigate = useNavigate();
+  };
 
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    setSuccess('');
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setError('');
-        setSuccess('');
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BASE_BACKEND_URL}/login`, formData, {
+        'Content-Type': 'application/json'
+      });
+      setSuccess(response.data.message);
+      localStorage.setItem('userDetails', JSON.stringify(response.data.userDetails))
+      Cookies.set("token", response.data.token, { expires: 1, secure: true, sameSite: "Strict" });
+      setTimeout(() => {
+        navigate('/'); // Assuming you have a dashboard route
+      }, 1500);
+    } catch (error) {
+      setError(error.response?.data?.message || 'An error occurred during login');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        try {
-            const response = await axios.post(`${import.meta.env.REACT_BASE_BACKEND_URL}/login`, formData,{
-              'Content-Type':'application/json'
-            });
-            setSuccess(response.data.message);
-            localStorage.setItem('userDetails',JSON.stringify( response.data.userDetails))
-            Cookies.set("token", response.data.token, { expires: 1, secure: true, sameSite: "Strict" });
-            setTimeout(() => {
-                navigate('/'); // Assuming you have a dashboard route
-            }, 1500);
-        } catch (error) {
-            setError(error.response?.data?.message || 'An error occurred during login');
-        } finally {
-            setLoading(false);
-        }
-    };
+  return (
+    <Container>
+      <FormCard>
+        <Header>
+          <AiDecoration>
+            <AiCircle>
+              <AiIcon>🤖</AiIcon>
+            </AiCircle>
+          </AiDecoration>
+          <Title>Welcome Back</Title>
+          <Subtitle>Log in to your AI Assistant</Subtitle>
+        </Header>
 
-    return (
-        <Container>
-            <FormCard>
-                <Header>
-                    <AiDecoration>
-                        <AiCircle>
-                            <AiIcon>🤖</AiIcon>
-                        </AiCircle>
-                    </AiDecoration>
-                    <Title>Welcome Back</Title>
-                    <Subtitle>Log in to your AI Assistant</Subtitle>
-                </Header>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+        {success && <SuccessMessage>{success}</SuccessMessage>}
 
-                {error && <ErrorMessage>{error}</ErrorMessage>}
-                {success && <SuccessMessage>{success}</SuccessMessage>}
+        <Form onSubmit={handleSubmit}>
+          <FormGroup>
+            <Label htmlFor="name">Username</Label>
+            <Input
+              id="name"
+              name="name"
+              type="text"
+              required
+              placeholder="Enter your username"
+              value={formData.name}
+              onChange={handleChange}
+            />
+          </FormGroup>
 
-                <Form onSubmit={handleSubmit}>
-                    <FormGroup>
-                        <Label htmlFor="name">Username</Label>
-                        <Input
-                            id="name"
-                            name="name"
-                            type="text"
-                            required
-                            placeholder="Enter your username"
-                            value={formData.name}
-                            onChange={handleChange}
-                        />
-                    </FormGroup>
+          <FormGroup>
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              name="password"
+              type="password"
+              required
+              placeholder="Enter your password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+          </FormGroup>
 
-                    <FormGroup>
-                        <Label htmlFor="password">Password</Label>
-                        <Input
-                            id="password"
-                            name="password"
-                            type="password"
-                            required
-                            placeholder="Enter your password"
-                            value={formData.password}
-                            onChange={handleChange}
-                        />
-                    </FormGroup>
+          <Button type="submit" disabled={loading}>
+            {loading ? <><Spinner /> Logging in...</> : 'Login'}
+          </Button>
+        </Form>
 
-                    <Button type="submit" disabled={loading}>
-                        {loading ? <><Spinner /> Logging in...</> : 'Login'}
-                    </Button>
-                </Form>
-
-                <LinkText>
-                    Don't have an account? <StyledLink onClick={() => navigate('/signup')}>Sign up</StyledLink>
-                </LinkText>
-            </FormCard>
-        </Container>
-    );
+        <LinkText>
+          Don't have an account? <StyledLink onClick={() => navigate('/signup')}>Sign up</StyledLink>
+        </LinkText>
+      </FormCard>
+    </Container>
+  );
 };
 
 export default Login;
